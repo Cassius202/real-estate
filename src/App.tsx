@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { AnimatePresence, motion, useScroll, useMotionValueEvent, useTransform } from "motion/react"
 import {
-  Menu, X, Phone, Home, Handshake,
-  Mail, ArrowRight, Search, Key, Landmark
+  Menu, X, Phone, Home,
+  Mail, ArrowRight, Search, Key, 
 } from "lucide-react"
 
 import logo_amber from './assets/images/logo_amber.png'
