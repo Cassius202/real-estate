@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { assets } from "./assets/assets";
-import { useThemeStore } from "./stores/useThemeStore";
 import App from "./App";
+import logo from './assets/images/logo_amber.png';
 
 const Loader = () => {
   const [loading, setLoading] = useState(true);
-  const { isDark } = useThemeStore();
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDark);
-  }, [isDark]);
 
   useEffect(() => {
     const loadTimer = setTimeout(() => setLoading(false), 2200);
@@ -24,41 +18,77 @@ const Loader = () => {
       {loading && (
         <motion.div
           key="loader"
-          className="fixed inset-0 z-100 grid place-content-center bg-white dark:bg-neutral-950"
+          className="fixed inset-0 z-[100] grid place-content-center bg-[#080808]"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          {/* Subtle radial glow behind logo */}
+          {/* Radial glow */}
           <div
             className="absolute inset-0 pointer-events-none"
             aria-hidden="true"
             style={{
-              background: isDark
-                ? "radial-gradient(ellipse 40% 30% at 50% 50%, rgba(22,163,74,0.08) 0%, transparent 70%)"
-                : "radial-gradient(ellipse 40% 30% at 50% 50%, rgba(22,163,74,0.06) 0%, transparent 70%)",
+              background:
+                "radial-gradient(ellipse 50% 40% at 50% 50%, rgba(201,169,110,0.07) 0%, transparent 70%)",
             }}
           />
 
-          <div className="relative flex flex-col items-center gap-y-5 animate-[loaderIn_0.5s_ease-out_both]">
+          <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=DM+Sans:wght@400;600&display=swap');
+            @keyframes loaderIn {
+              from { opacity: 0; transform: translateY(12px); }
+              to   { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes loadBar {
+              from { width: 0%; }
+              to   { width: 100%; }
+            }
+          `}</style>
+
+          <div className="relative flex flex-col items-center gap-y-6"
+            style={{ animation: "loaderIn 0.6s ease-out both" }}
+          >
             {/* Logo */}
-            <div className="size-16 drop-shadow-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="size-35 drop-shadow-[0_0_24px_rgba(201,169,110,0.2)]"
+            >
               <img
-                src={!isDark ? assets.logoLight : assets.logoDark}
-                alt="JoJean Consults logo"
+                src={logo}
+                alt="Askariot Homes logo"
                 className="w-full h-full object-contain"
               />
-            </div>
+            </motion.div>
 
             {/* Brand name */}
-            <p className="font-semibold tracking-wide text-lg text-neutral-800 dark:text-neutral-100">
-              JoJean Consults
-            </p>
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              className="font-semibold tracking-[0.12em] text-xl text-white"
+            >
+              Askariot Homes{" "}
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontStyle: "italic" }}
+                className="text-amber-400/80 font-normal text-base tracking-widest">
+                LTD
+              </span>
+            </motion.p>
 
             {/* Loading bar */}
-            <div className="w-32 h-[2px] rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden">
-              <div className="h-full bg-green-600 rounded-full animate-[loadBar_2.2s_ease-in-out_forwards]" />
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.35, duration: 0.4 }}
+              className="w-36 h-[1.5px] rounded-full bg-white/10 overflow-hidden"
+            >
+              <div
+                className="h-full rounded-full bg-amber-400"
+                style={{ animation: "loadBar 2.2s ease-in-out forwards" }}
+              />
+            </motion.div>
           </div>
         </motion.div>
       )}
