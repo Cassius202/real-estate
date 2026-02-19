@@ -36,33 +36,53 @@ interface SidebarProps {
 /* ─── NOW SELLING TOP BAR ────────────────────────────── */
 function NowSellingBar() {
   const { scrollY } = useScroll();
-  // Gradually moves the bar up based on scroll
   const y = useTransform(scrollY, [0, TOP_BAR_HEIGHT], [0, -TOP_BAR_HEIGHT]);
   const opacity = useTransform(scrollY, [0, TOP_BAR_HEIGHT], [1, 0]);
 
   return (
-    <motion.div
-      style={{ y, opacity, height: TOP_BAR_HEIGHT }}
-      className="fixed top-0 left-0 right-0 z-[60] bg-amber-600 text-white flex items-center justify-between px-6 md:px-12 lg:px-20 overflow-hidden"
-    >
-      <div className="flex items-center gap-3">
-        {/* Pulsing Dot */}
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-        </span>
-        <p className="text-[0.65rem] md:text-[0.75rem] font-bold tracking-wider uppercase whitespace-nowrap flex items-center gap-2">
-          <div className="bg-slate-900/20 p-1.5 px-3 rounded-full">Now Selling</div> <span className="font-medium normal-case opacity-90">Close Range Estate, Wuse II, Abuja</span>
-        </p>
-      </div>
-
-      <a 
-        href="#project" 
-        className="text-[0.6rem] md:text-[0.7rem] font-bold uppercase tracking-tighter border-b border-white/40 hover:border-white transition-colors no-underline"
+    <>
+      <style>{`
+        @keyframes ticker {
+          0% { transform: translateX(10px); }
+          100% { transform: translateX(-30%); }
+        }
+        .ticker-animate {
+          display: flex;
+          animation: ticker 12s linear infinite alternate;
+        }
+        @media (min-width: 640px) {
+          .ticker-animate {
+            animation: none;
+            transform: none !important;
+          }
+        }
+      `}</style>
+      <motion.div
+        style={{ y, opacity, height: TOP_BAR_HEIGHT }}
+        className="fixed top-0 left-0 right-0 z-[60] bg-amber-600 text-white flex items-center justify-between px-6 md:px-12 lg:px-20 overflow-hidden"
       >
-        Learn More
-      </a>
-    </motion.div>
+        <div className="flex items-center gap-3 overflow-hidden flex-1 group">
+          <div className="flex items-center gap-3 ticker-animate whitespace-nowrap shrink-0">
+            {/* Pulsing Dot */}
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+            </span>
+            <p className="text-[0.65rem] md:text-[0.75rem] font-bold tracking-wider uppercase flex items-center gap-2 shrink-0">
+              <div className="bg-slate-900/20 p-1.5 px-3 rounded-full shrink-0">Now Selling</div> 
+              <span className="font-medium normal-case opacity-90 shrink-0">Close Range Estate, Wuse II, Abuja</span>
+            </p>
+          </div>
+        </div>
+
+        <a 
+          href="#project" 
+          className="text-[0.6rem] md:text-[0.7rem] font-bold uppercase tracking-tighter border-b border-white/40 hover:border-white transition-colors no-underline ml-4 shrink-0 bg-amber-600 z-10"
+        >
+          Learn More
+        </a>
+      </motion.div>
+    </>
   );
 }
 
@@ -74,7 +94,6 @@ function Navbar({ setSidebarOpen }: NavbarProps) {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
-    // Headroom Logic
     if (latest > previous && latest > 150) {
       setHidden(true);
     } else {
@@ -83,7 +102,6 @@ function Navbar({ setSidebarOpen }: NavbarProps) {
     setScrolled(latest > 50);
   });
 
-  // Adjust the navbar's starting position based on the Top Bar
   const navTop = useTransform(scrollY, [0, TOP_BAR_HEIGHT], [TOP_BAR_HEIGHT, 0]);
 
   return (
@@ -94,7 +112,7 @@ function Navbar({ setSidebarOpen }: NavbarProps) {
       }}
       variants={{
         visible: { y: 0 },
-        hidden: { y: "-150%" }, // Extra offset to clear the top bar
+        hidden: { y: "-150%" },
       }}
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.3, ease: "easeInOut" }}
