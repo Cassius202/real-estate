@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useTransform } from "motion/react";
 import App from "./App";
 import logo from './assets/images/logo_amber.png';
 
+/* ─── LOADER COMPONENT ──────────────────────────────── */
 const Loader = () => {
   const [loading, setLoading] = useState(true);
 
@@ -53,7 +54,7 @@ const Loader = () => {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="size-35 drop-shadow-[0_0_24px_rgba(201,169,110,0.2)]"
+              className="w-32 h-32 md:w-35 md:h-35 drop-shadow-[0_0_24px_rgba(201,169,110,0.2)]"
             >
               <img
                 src={logo}
@@ -95,5 +96,45 @@ const Loader = () => {
     </AnimatePresence>
   );
 };
+
+/* ─── UPDATED NOW SELLING BAR (MOBILE FIXED) ────────── */
+const TOP_BAR_HEIGHT = 45;
+
+export function NowSellingBar() {
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, TOP_BAR_HEIGHT], [0, -TOP_BAR_HEIGHT]);
+  const opacity = useTransform(scrollY, [0, TOP_BAR_HEIGHT], [1, 0]);
+
+  return (
+    <motion.div
+      style={{ y, opacity, height: "auto", minHeight: TOP_BAR_HEIGHT }}
+      className="fixed top-0 left-0 right-0 z-[60] bg-amber-600 text-white flex flex-row items-center justify-between px-4 md:px-12 lg:px-20 py-2 md:py-0 overflow-hidden"
+    >
+      <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+        {/* Pulsing Dot */}
+        <span className="relative flex h-2 w-2 shrink-0">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+        </span>
+        
+        <div className="text-[0.6rem] md:text-[0.75rem] font-bold tracking-wider uppercase flex items-center gap-1.5 md:gap-2 truncate">
+          <span className="bg-slate-900/20 p-1 px-2 md:px-3 rounded-full text-[0.55rem] md:text-[0.7rem] shrink-0">
+            Now Selling
+          </span> 
+          <span className="font-medium normal-case opacity-90 truncate">
+            Close Range Estate, Wuse II, Abuja
+          </span>
+        </div>
+      </div>
+
+      <a 
+        href="#project" 
+        className="text-[0.55rem] md:text-[0.7rem] font-bold uppercase tracking-tighter border-b border-white/40 hover:border-white transition-colors no-underline ml-4 shrink-0 whitespace-nowrap"
+      >
+        Learn More
+      </a>
+    </motion.div>
+  );
+}
 
 export default Loader;
