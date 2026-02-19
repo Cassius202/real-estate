@@ -2,7 +2,7 @@ import { useState } from "react"
 import { AnimatePresence, motion, useScroll, useMotionValueEvent, useTransform } from "motion/react"
 import {
   Menu, X, Phone, Home, Handshake,
-  Mail, ArrowRight
+  Mail, ArrowRight, Search, Key, Landmark
 } from "lucide-react"
 
 import logo_amber from './assets/images/logo_amber.png'
@@ -18,22 +18,12 @@ const TOP_BAR_HEIGHT = 45;
 
 const navLinks = [
   { label: "Home", href: "#home", icon: <Home size={15} /> },
-  { label: "Project", href: "#project", icon: null },
-  { label: "Partners", href: "#partners", icon: <Handshake size={15} /> },
+  { label: "Properties", href: "#properties", icon: <Search size={15} /> },
+  { label: "Our Services", href: "#services", icon: <Key size={15} /> },
   { label: "Contact", href: "#contact", icon: <Mail size={15} /> },
 ]
 
-/* ─── TYPES ─────────────────────────────────────────── */
-interface NavbarProps {
-  setSidebarOpen: (open: boolean) => void;
-}
-
-interface SidebarProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-/* ─── NOW SELLING TOP BAR ────────────────────────────── */
+/* ─── FEATURED LISTING TOP BAR ────────────────────────── */
 function NowSellingBar() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, TOP_BAR_HEIGHT], [0, -TOP_BAR_HEIGHT]);
@@ -69,17 +59,17 @@ function NowSellingBar() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
             </span>
             <p className="text-[0.65rem] md:text-[0.75rem] font-bold tracking-wider uppercase flex items-center gap-2 shrink-0">
-              <div className="bg-slate-900/20 p-1.5 px-3 rounded-full shrink-0">Now Selling</div> 
-              <span className="font-medium normal-case opacity-90 shrink-0">Close Range Estate, Wuse II, Abuja</span>
+              <div className="bg-slate-900/20 p-1.5 px-3 rounded-full shrink-0">Featured Listing</div> 
+              <span className="font-medium normal-case opacity-90 shrink-0">Premium Penthouse, Wuse II, Abuja</span>
             </p>
           </div>
         </div>
 
         <a 
-          href="#project" 
+          href="#properties" 
           className="text-[0.6rem] md:text-[0.7rem] font-bold uppercase tracking-tighter border-b border-white/40 hover:border-white transition-colors no-underline ml-4 shrink-0 bg-amber-600 z-10"
         >
-          Learn More
+          View Details
         </a>
       </motion.div>
     </>
@@ -87,7 +77,7 @@ function NowSellingBar() {
 }
 
 /* ─── NAVBAR (HEADROOM EFFECT) ────────────────────────── */
-function Navbar({ setSidebarOpen }: NavbarProps) {
+function Navbar({ setSidebarOpen }: { setSidebarOpen: (open: boolean) => void }) {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
@@ -126,7 +116,7 @@ function Navbar({ setSidebarOpen }: NavbarProps) {
       <a href="#home" className="flex items-center gap-3 no-underline whitespace-nowrap">
         <img src={logo_only} alt="Logo" className="h-8 md:h-9 object-contain" />
         <span className="text-white text-lg md:text-xl font-semibold tracking-wide flex items-center gap-1.5 max-sm:hidden">
-          Askariot <span className="text-amber-500">Homes</span> LTD
+          Askariot <span className="text-amber-500">Real Estate</span> LTD
         </span>
       </a>
 
@@ -151,7 +141,7 @@ function Navbar({ setSidebarOpen }: NavbarProps) {
             font-bold tracking-widest uppercase transition-all duration-300 no-underline rounded-sm"
         >
           <Phone size={13} />
-          Book a Call
+          Consult an Agent
         </a>
 
         <button
@@ -166,7 +156,7 @@ function Navbar({ setSidebarOpen }: NavbarProps) {
 }
 
 /* ─── SIDEBAR ─────────────────────────────────────────── */
-function Sidebar({ open, onClose }: SidebarProps) {
+function Sidebar({ open, onClose }: { open: boolean, onClose: () => void }) {
   return (
     <AnimatePresence>
       {open && (
@@ -188,7 +178,7 @@ function Sidebar({ open, onClose }: SidebarProps) {
           >
             <div className="flex items-center justify-between mb-16">
               <span className="text-white font-serif text-xl font-semibold whitespace-nowrap">
-                Askariot Homes <span className="text-amber-500">LTD</span>
+                Askariot <span className="text-amber-500">Estate</span>
               </span>
               <button onClick={onClose} className="text-white bg-transparent border-0 cursor-pointer">
                 <X size={24} />
@@ -251,7 +241,7 @@ function Hero() {
       >
         <img
           src={heroImg}
-          alt="Luxury Home"
+          alt="Luxury Property Portfolio"
           className="w-full h-auto object-contain object-right-bottom brightness-90 contrast-110"
         />
       </motion.div>
@@ -266,7 +256,7 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             className="text-amber-500 text-[0.7rem] font-bold tracking-[0.4em] uppercase mb-6"
           >
-            Redefining Residential Living
+            Exclusive Property Management & Brokerage
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -275,8 +265,8 @@ function Hero() {
             className="font-serif font-bold text-white leading-[1.1] tracking-tight mb-8
               text-[clamp(2.5rem,7vw,5.5rem)]"
           >
-            Luxury Homes,<br />
-            <span className="text-amber-500 italic font-medium">Thoughtfully Built</span>
+            Prime Assets,<br />
+            <span className="text-amber-500 italic font-medium">Expertly Curated</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -284,8 +274,8 @@ function Hero() {
             transition={{ delay: 0.3 }}
             className="text-white/50 leading-relaxed mb-12 max-w-[550px] mx-auto lg:mx-0 text-[clamp(1rem,1.2vw,1.1rem)]"
           >
-            From concept to completion, Askariot Homes delivers bespoke residential 
-            architecture with precision, elegance, and enduring quality.
+            Askariot Real Estate simplifies the luxury market. We connect discerning 
+            investors with high-yield properties and bespoke living spaces.
           </motion.p>
 
           <motion.div 
@@ -294,11 +284,11 @@ function Hero() {
             transition={{ delay: 0.4 }}
             className="flex flex-col sm:flex-row flex-wrap justify-center lg:justify-start gap-5"
           >
-            <a href="#project" className="bg-amber-500 text-black px-12 py-4 text-[0.75rem] font-bold tracking-widest uppercase no-underline rounded-sm hover:bg-white hover:text-black transition-all duration-300">
-              View Projects
+            <a href="#properties" className="bg-amber-500 text-black px-12 py-4 text-[0.75rem] font-bold tracking-widest uppercase no-underline rounded-sm hover:bg-white hover:text-black transition-all duration-300">
+              Browse Listings
             </a>
             <a href="#about" className="border border-white/10 text-white px-12 py-4 text-[0.75rem] font-bold tracking-widest uppercase no-underline rounded-sm hover:border-amber-500 hover:text-amber-500 transition-all duration-300">
-              About Us
+              Our Agency
             </a>
           </motion.div>
         </div>
@@ -310,9 +300,9 @@ function Hero() {
 /* ─── ABOUT SECTION ───────────────────────────────────── */
 function About() {
   const stats = [
-    { value: "15+", label: "Years Experience" },
-    { value: "400+", label: "Homes Built" },
-    { value: "100%", label: "Precision" },
+    { value: "15+", label: "Market Experience" },
+    { value: "₦50B+", label: "Assets Managed" },
+    { value: "98%", label: "Client Retention" },
   ]
 
   return (
@@ -325,11 +315,12 @@ function About() {
           transition={{ duration: 0.8 }}
           className="text-center lg:text-left"
         >
-          <span className="text-amber-500 text-[0.7rem] font-bold tracking-widest uppercase mb-4 block">001. The Vision</span>
-          <h2 className="font-serif text-4xl md:text-6xl text-white mb-8">Crafting Legacies in <span className="italic text-amber-500">Architecture</span></h2>
+          <span className="text-amber-500 text-[0.7rem] font-bold tracking-widest uppercase mb-4 block">001. The Agency</span>
+          <h2 className="font-serif text-4xl md:text-6xl text-white mb-8">Securing Wealth Through <span className="italic text-amber-500">Real Estate</span></h2>
           <p className="text-white/50 text-lg leading-relaxed mb-10 max-w-[500px] mx-auto lg:mx-0">
-            Founded with a vision to redefine residential living, Askariot Homes LTD
-            blends innovative architecture with functional design.
+            Askariot Real Estate LTD is a premier property consultancy. We go beyond 
+            transactions—we provide the strategic insight and market access 
+            necessary to build a lasting property legacy.
           </p>
           <div className="flex justify-center lg:justify-start gap-12">
             {stats.map((s, i) => (
@@ -347,12 +338,12 @@ function About() {
           viewport={{ once: true }}
           className="relative aspect-square bg-[#111] border rounded-2xl border-white/5 overflow-hidden hidden md:block"
         >
-           <div className="absolute inset-0 flex items-center justify-center text-white/5 font-serif text-9xl w-full h-full">
-           <img src={img} alt="" className="w-full h-full object-cover opacity-80" />
-           </div>
-           <div className="absolute bottom-10 left-10 border-l-2 border-amber-500 pl-6">
-             <p className="text-white italic text-xl">"Building the backdrop of your life."</p>
-           </div>
+            <div className="absolute inset-0 flex items-center justify-center text-white/5 font-serif text-9xl w-full h-full">
+            <img src={img} alt="Portfolio" className="w-full h-full object-cover opacity-80" />
+            </div>
+            <div className="absolute bottom-10 left-10 border-l-2 border-amber-500 pl-6">
+              <p className="text-white italic text-xl">"Unlocking the doors to your future."</p>
+            </div>
         </motion.div>
       </div>
     </section>
@@ -386,7 +377,7 @@ export default function App() {
 
       <footer className="py-20 px-6 border-t border-white/5 text-center">
         <p className="text-white/30 text-xs tracking-widest uppercase">
-          © 2026 Askariot Homes LTD. All Rights Reserved.
+          © 2026 Askariot Real Estate LTD. All Rights Reserved.
         </p>
       </footer>
     </div>
