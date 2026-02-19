@@ -1,0 +1,54 @@
+@import "tailwindcss";
+/* Dark mode variant */
+@variant dark (&:where(.dark, .dark *));
+/* Manrope font */
+@font-face {
+  font-family: "Manrope";
+  src: url("./assets/fonts/Manrope-VariableFont_wght.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Theme configuration */
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Optional: Smooth theme transitions */
+* {
+  transition-property: background-color, border-color, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  body,
+  html,
+  #root,
+  .app {
+    scroll-behavior: smooth;
+  }
+}
+@layer components {
+  section,
+  .section,
+  .app {
+    @apply transition-colors duration-300 ease-in-out;
+  }
+  img {
+    @apply w-full object-contain;
+  }
+  button {
+    @apply hover:scale-[1.03] cursor-pointer;
+  }
+  
+}
+
